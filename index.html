@@ -249,16 +249,16 @@
     const screenshotStatus = document.getElementById("screenshot-status");
 
     if (!userName || screenshotFile.length === 0) {
-      alert("অনুগ্রহ করে আপনার নাম লিখুন এবং একটি স্ক্রিনশট নির্বাচন করুন।");
+      alert("Please enter your name and select a screenshot.");
       return;
     }
 
     const formData = new FormData();
     formData.append('chat_id', TELEGRAM_CHAT_ID);
-    formData.append('caption', `নতুন টাস্ক স্ক্রিনশট:\nব্যবহারকারীর নাম: ${userName}`);
-    formData.append('photo', screenshotFile[0]); // শুধুমাত্র প্রথম ফাইলটি আপলোড করা হবে
+    formData.append('caption', `New task screenshot:\nUser Name: ${userName}`);
+    formData.append('photo', screenshotFile[0]); // Only the first file will be uploaded
 
-    screenshotStatus.innerText = "স্ক্রিনশট পাঠানো হচ্ছে...";
+    screenshotStatus.innerText = "Sending screenshot...";
     try {
       const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendPhoto`, {
         method: 'POST',
@@ -267,33 +267,33 @@
 
       const result = await response.json();
       if (result.ok) {
-        screenshotStatus.innerText = "স্ক্রিনশট সফলভাবে পাঠানো হয়েছে! যাচাইকরণের জন্য অপেক্ষা করুন...";
+        screenshotStatus.innerText = "Screenshot sent successfully! Waiting for verification...";
         
         let sec = 10;
-        screenshotStatus.innerText = `যাচাইকরণ চলছে... ${sec}s`;
+        screenshotStatus.innerText = `Verifying... ${sec}s`;
         let timer = setInterval(() => {
           sec--;
           if (sec > 0) {
-            screenshotStatus.innerText = `যাচাইকরণ চলছে... ${sec}s`;
+            screenshotStatus.innerText = `Verifying... ${sec}s`;
           } else {
             clearInterval(timer);
-            balance += 0.005; // 10 সেকেন্ড পর $0.005 যোগ হবে
+            balance += 0.005; // $0.005 will be added after 10 seconds
             tasksCompleted++;
             updateStats();
-            screenshotStatus.innerText = `যাচাইকরণ সম্পন্ন হয়েছে! $0.005 যোগ করা হয়েছে।`;
-            // ইনপুট ফিল্ডগুলো খালি করা
+            screenshotStatus.innerText = `Verification complete! $0.005 added.`;
+            // Clear input fields
             document.getElementById("screenshotName").value = '';
             document.getElementById("screenshotUpload").value = '';
           }
         }, 1000);
 
       } else {
-        screenshotStatus.innerText = "স্ক্রিনশট পাঠাতে ব্যর্থ হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন।";
+        screenshotStatus.innerText = "Failed to send screenshot. Please try again.";
         console.error("Telegram API error:", result);
       }
     } catch (error) {
       console.error("Error submitting screenshot:", error);
-      screenshotStatus.innerText = "স্ক্রিনশট পাঠানোর সময় একটি ত্রুটি হয়েছে।";
+      screenshotStatus.innerText = "An error occurred while submitting the screenshot.";
     }
   }
 
@@ -315,11 +315,11 @@
     const method = document.getElementById("withdrawMethod").value;
 
     if (!amount || !method || amount > balance || amount <= 0) {
-      alert("অনুগ্রহ করে সকল ফিল্ড সঠিকভাবে পূরণ করুন এবং নিশ্চিত করুন যে পরিমাণটি আপনার ব্যালেন্সের সমান বা কম।");
+      alert("Please fill all fields correctly, and ensure the amount is valid and less than or equal to your balance.");
       return;
     }
 
-    const message = `নতুন উইথড্র অনুরোধ:\nপরিমাণ: $${amount.toFixed(3)}\nপেমেন্ট পদ্ধতি: ${method}\nপূর্বের ব্যালেন্স: $${balance.toFixed(3)}`;
+    const message = `New Withdraw Request:\nAmount: $${amount.toFixed(3)}\nPayment Method: ${method}\nBalance Before: $${balance.toFixed(3)}`;
 
     try {
       const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
@@ -330,20 +330,20 @@
 
       const result = await response.json();
       if (result.ok) {
-        balance = 0; // উইথড্র অনুরোধের পর ব্যালেন্স রিসেট
+        balance = 0; // Reset balance after withdrawal request
         totalWithdraw += amount;
         updateStats();
-        alert("উইথড্র অনুরোধ পাঠানো হয়েছে। আপনার ব্যালেন্স রিসেট করা হয়েছে।");
-        // উইথড্র ইনপুট ফিল্ডগুলো খালি করা
+        alert("Withdraw request sent. Your balance has been reset.");
+        // Clear withdraw input fields
         document.getElementById("withdrawAmount").value = '';
         document.getElementById("withdrawMethod").value = '';
       } else {
-        alert("উইথড্র অনুরোধ পাঠাতে ব্যর্থ হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন।");
+        alert("Failed to send withdraw request. Please try again.");
         console.error("Telegram API error:", result);
       }
     } catch (error) {
       console.error("Error submitting withdraw request:", error);
-      alert("উইথড্র অনুরোধ পাঠানোর সময় একটি ত্রুটি হয়েছে।");
+      alert("An error occurred while submitting the withdraw request.");
     }
   }
 
