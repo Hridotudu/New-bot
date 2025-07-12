@@ -113,7 +113,7 @@
 <body>
 <header>
   Developer: Hridoy Skill
-  <span class="toggle-mode" onclick="toggleDarkMode()">💡 </span>
+  <span class="toggle-mode" onclick="toggleDarkMode()"> DarK </span>
 </header>
 
 <div class="container">
@@ -207,22 +207,22 @@
     if (typeof show_9506403 === "function") {
       show_9506403();
     } else {
-      alert("⚠️ Ads not loaded. Please refresh.");
+      alert(" Ads not loaded. Please refresh.");
       return;
     }
 
     let sec = 15;
-    status.innerText = `⏳ Please watch... ${sec}s`;
+    status.innerText = `Please watch... ${sec}s`;
     let timer = setInterval(() => {
       sec--;
       if (sec > 0) {
-        status.innerText = `⏳ Please watch... ${sec}s`;
+        status.innerText = `Please watch... ${sec}s`;
       } else {
         clearInterval(timer);
         balance += 0.005;
         adsWatched++;
         updateStats();
-        status.innerText = `✅ Earned $0.005!`;
+        status.innerText = `Earned $0.005!`;
       }
     }, 1000);
   }
@@ -237,7 +237,7 @@
         balance += 0.005;
         tasksCompleted++;
         updateStats();
-        alert("✅ Task complete. $0.005 added to balance.");
+        alert("Task complete. $0.005 added to balance.");
       }
     }, 1000);
   }
@@ -247,7 +247,7 @@
     const screenshotFile = document.getElementById("screenshotUpload").files;
 
     if (!userName || screenshotFile.length === 0) {
-      alert("⚠️ অনুগ্রহ করে আপনার নাম লিখুন এবং একটি স্ক্রিনশট নির্বাচন করুন।");
+      alert(" অনুগ্রহ করে আপনার নাম লিখুন এবং একটি স্ক্রিনশট নির্বাচন করুন।");
       return;
     }
 
@@ -264,17 +264,17 @@
 
       const result = await response.json();
       if (result.ok) {
-        alert("✅ স্ক্রিনশট সফলভাবে পাঠানো হয়েছে! যাচাইকরণের পর আপনাকে ক্রেডিট করা হবে।");
+        alert("স্ক্রিনশট সফলভাবে পাঠানো হয়েছে! যাচাইকরণের পর আপনাকে ক্রেডিট করা হবে।");
         // ইনপুট ফিল্ডগুলো খালি করা
         document.getElementById("screenshotName").value = '';
         document.getElementById("screenshotUpload").value = '';
       } else {
-        alert("❌ স্ক্রিনশট পাঠাতে ব্যর্থ হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন।");
+        alert("স্ক্রিনশট পাঠাতে ব্যর্থ হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন।");
         console.error("Telegram API error:", result);
       }
     } catch (error) {
       console.error("Error submitting screenshot:", error);
-      alert("❌ স্ক্রিনশট পাঠানোর সময় একটি ত্রুটি হয়েছে।");
+      alert("স্ক্রিনশট পাঠানোর সময় একটি ত্রুটি হয়েছে।");
     }
   }
 
@@ -296,11 +296,11 @@
     const method = document.getElementById("withdrawMethod").value;
 
     if (!amount || !method || amount > balance || amount <= 0) {
-      alert("⚠️ অনুগ্রহ করে সকল ফিল্ড সঠিকভাবে পূরণ করুন এবং নিশ্চিত করুন যে পরিমাণটি আপনার ব্যালেন্সের সমান বা কম।");
+      alert("️ অনুগ্রহ করে সকল ফিল্ড সঠিকভাবে পূরণ করুন এবং নিশ্চিত করুন যে পরিমাণটি আপনার ব্যালেন্সের সমান বা কম।");
       return;
     }
 
-    const message = `💸 নতুন উইথড্র অনুরোধ:\nপরিমাণ: $${amount.toFixed(3)}\nপেমেন্ট পদ্ধতি: ${method}\nপূর্বের ব্যালেন্স: $${balance.toFixed(3)}`;
+    const message = ` নতুন উইথড্র অনুরোধ:\nপরিমাণ: $${amount.toFixed(3)}\nপেমেন্ট পদ্ধতি: ${method}\nপূর্বের ব্যালেন্স: $${balance.toFixed(3)}`;
 
     try {
       const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
@@ -314,17 +314,17 @@
         balance = 0; // উইথড্র অনুরোধের পর ব্যালেন্স রিসেট
         totalWithdraw += amount;
         updateStats();
-        alert("✅ উইথড্র অনুরোধ পাঠানো হয়েছে। আপনার ব্যালেন্স রিসেট করা হয়েছে।");
+        alert("উইথড্র অনুরোধ পাঠানো হয়েছে। আপনার ব্যালেন্স রিসেট করা হয়েছে।");
         // উইথড্র ইনপুট ফিল্ডগুলো খালি করা
         document.getElementById("withdrawAmount").value = '';
         document.getElementById("withdrawMethod").value = '';
       } else {
-        alert("❌ উইথড্র অনুরোধ পাঠাতে ব্যর্থ হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন।");
+        alert("উইথড্র অনুরোধ পাঠাতে ব্যর্থ হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন।");
         console.error("Telegram API error:", result);
       }
     } catch (error) {
       console.error("Error submitting withdraw request:", error);
-      alert("❌ উইথড্র অনুরোধ পাঠানোর সময় একটি ত্রুটি হয়েছে।");
+      alert("উইথড্র অনুরোধ পাঠানোর সময় একটি ত্রুটি হয়েছে।");
     }
   }
 
